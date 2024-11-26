@@ -84,9 +84,14 @@ ws.on("message", function incoming(data) {
 
   if ("blague" === data.intent.name) {
     robotTurnRight();
-    say("Pourquoi les programmeurs n'aiment-ils pas la nature ? — Parce qu'il y a trop de bugs !");
-    playSound('./fin.wav');
+    
+    say("Pourquoi les programmeurs n'aiment-ils pas la nature ? — Parce qu'il y a trop de beug !");
+    
+    setTimeout(() => {
+      playSound('./fin.wav');
+    }, 5000); 
   }
+  
 });
 
 function say(text) {
@@ -95,7 +100,7 @@ function say(text) {
     port: 12101,
     path: "/api/text-to-speech",
     method: "POST"
-  };
+  }; 
 
   const req = https.request(options);
 
