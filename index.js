@@ -2,6 +2,9 @@ const WebSocket = require("ws");
 const matrix = require("@matrix-io/matrix-lite");
 const https = require("http");
 const player = require('play-sound')();  
+const fetch = require('node-fetch');
+const baseUrl = 'http://192.168.1.101';
+
 
 const ws = new WebSocket("ws://localhost:12101/api/events/intent");
 console.log("**Started Web Socket Client**");
@@ -41,36 +44,66 @@ ws.on("message", function incoming(data) {
     matrix.gpio.setMode(1, 'output');
     matrix.gpio.setDigital(1, 'OFF');
   }
+ 
+if ("Arrete" === data.intent.name) {
+  robotStop();
+  say("Robot arrêté");
 
-  if ("Arrete" === data.intent.name) {
-    robotStop();
-    say("Robot arrêté");
-  }
+  fetch(`${baseUrl}?/Arrete`)
+      .then(response => {
+          console.log(`Réponse pour Arrete: ${response.status}`);
+      });
+}
 
-  if ("Avance" === data.intent.name) {
-    robotMoveForward();
-    say("Robot en avant");
-  }
+if ("Avance" === data.intent.name) {
+  robotMoveForward();
+  say("Robot en avant");
 
-  if ("Droit" === data.intent.name) {
-    robotTurnRight();
-    say("Robot tourne à droite");
-  }
+  fetch(`${baseUrl}?/Avance`)
+      .then(response => {
+          console.log(`Réponse pour Avance: ${response.status}`);
+      });
+}
 
-  if ("Gauche" === data.intent.name) {
-    robotTurnLeft();
-    say("Robot tourne à gauche");
-  }
+if ("Droit" === data.intent.name) {
+  robotTurnRight();
+  say("Robot tourne à droite");
 
-  if ("Plusvite" === data.intent.name) {
-    robotIncreaseSpeed();
-    say("Vitesse augmentée");
-  }
+  fetch(`${baseUrl}?/Droit`)
+      .then(response => {
+          console.log(`Réponse pour Droit: ${response.status}`);
+      });
+}
 
-  if ("Moinsvite" === data.intent.name) {
-    robotDecreaseSpeed();
-    say("Vitesse réduite");
-  }
+if ("Gauche" === data.intent.name) {
+  robotTurnLeft();
+  say("Robot tourne à gauche");
+
+  fetch(`${baseUrl}?/Gauche`)
+      .then(response => {
+          console.log(`Réponse pour Gauche: ${response.status}`);
+      });
+}
+
+if ("Plusvite" === data.intent.name) {
+  robotIncreaseSpeed();
+  say("Vitesse augmentée");
+
+  fetch(`${baseUrl}?/Plusvite`)
+      .then(response => {
+          console.log(`Réponse pour Plusvite: ${response.status}`);
+      });
+}
+
+if ("Moinsvite" === data.intent.name) {
+  robotDecreaseSpeed();
+  say("Vitesse réduite");
+
+  fetch(`${baseUrl}?/Moinsvite`)
+      .then(response => {
+          console.log(`Réponse pour Moinsvite: ${response.status}`);
+      });
+}
 
   if ("Cava" === data.intent.name) {
     robotTurnRight();
